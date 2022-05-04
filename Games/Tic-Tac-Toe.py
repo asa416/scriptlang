@@ -1,6 +1,6 @@
 from tkinter import *
 
-def winOrLose(token):
+def isWin(token):
     if (cells[0][0].token == token and cells[0][1].token == token and cells[0][2].token == token) or\
         (cells[1][0].token == token and cells[1][1].token == token and cells[1][2].token == token) or\
         (cells[2][0].token == token and cells[2][1].token == token and cells[2][2].token == token) or\
@@ -55,7 +55,7 @@ class Cell(Label):
             currentToken = 'X'
         else:
             currentToken = 'O'
-        if winOrLose(self.token):
+        if isWin(self.token):
             str.set(self.token+"승리! 게임이 끝났습니다")
         elif isFull():
             str.set("비김! 게임이 끝났습니다")
@@ -63,23 +63,19 @@ class Cell(Label):
             str.set(currentToken+" 차례")
         self["image"]=images[self.token]
 
-
-
 window = Tk()
 window.title("Tic-Tac-Toe")
-
-img_O = PhotoImage(file='image/o.gif')
-img_X = PhotoImage(file='image/x.gif')
-img_empty = PhotoImage(file='image/empty.gif')
+img_O = PhotoImage(file='../image/o.gif')
+img_X = PhotoImage(file='../image/x.gif')
+img_empty = PhotoImage(file='../image/empty.gif')
 
 images = {'':img_empty,'O':img_O,'X':img_X}
 
 running = True
+currentToken = 'O'
 
 GameFrame=Frame(window)
 GameFrame.pack(side='top',expand=True,fill='both')
-
-currentToken = 'O'
 
 cells = [[Cell(GameFrame, img = images['']) for _ in range(3)] for _ in range(3)]
 
