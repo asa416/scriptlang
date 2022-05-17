@@ -5,8 +5,9 @@
 from tkinter import *
 from tkinter import font
 import tkinter.ttk as myTtk
+from data import makeList, sportsList
 
-sportsList = ['Baseball', 'Soccer', 'Tennis']
+
 
 def buttonClick(num):
     for k, v in sportsButton.items():
@@ -65,7 +66,8 @@ buttonTennis['command']=lambda:buttonClick(2)
 LBScrollbar = Scrollbar(frameCombo)
 SearchListBox = Listbox(frameCombo,font=fontNormal,activestyle='none',width=10,
 height=1,borderwidth=12,relief='ridge',yscrollcommand=LBScrollbar.set)
-sigun_list=['가평군', '고양시', '광명시', '구리시', '김포시', '남양주시', '부천시', '성남시', '수원시', '시흥시', '안산시', '안성시', '안양시', '양주시', '양평군', '여주시', '연천군', '용인시', '의정부시', '이천시', '파주시', '평택시', '포천시', '하남시', '화성시']
+#sigun_list=['가평군', '고양시', '광명시', '구리시', '김포시', '남양주시', '부천시', '성남시', '수원시', '시흥시', '안산시', '안성시', '안양시', '양주시', '양평군', '여주시', '연천군', '용인시', '의정부시', '이천시', '파주시', '평택시', '포천시', '하남시', '화성시']
+sigun_list = makeList('Baseball')
 combo  = myTtk.Combobox(frameCombo, values=sigun_list)
 combo.pack(side=LEFT, expand=True, fill='both')
 combo.set('시군 선택')
