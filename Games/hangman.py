@@ -98,11 +98,11 @@ class Hangman:
         self.finished = NOT_FINSIHED
 
     def guess(self, letter):
-        import re
         i = 0
         if self.hiddenWord.find(letter) == -1:
-            self.nMissChar += 1
-            self.nMissedLetters.append(letter)
+            if letter not in self.nMissedLetters:
+                self.nMissChar += 1
+                self.nMissedLetters.append(letter)
         else:
             while True:
                 p = self.hiddenWord.find(letter,i)
