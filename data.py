@@ -36,23 +36,35 @@ def getDataSoccer():
 
 sportsList = ['Baseball', 'Soccer', 'Tennis']
 
-def makeList(sport):
+def makeList():
     from xml.dom.minidom import parseString
     from xml.etree import ElementTree
 
-    if sport == 'Baseball':
-        response_body = getDataBaseball()
-    elif sport == sportsList[1]:
-        response_body = getDataSoccer()
+    global baseball, soccer
 
-    tree = ElementTree.fromstring(response_body)
 
-    sigunList =[]
+    tree = ElementTree.fromstring(baseball)
+
+    sigunListBaseball =[]
 
     itemElements = tree.iter("row")
     for item in itemElements:
         sigun = item.find("SIGUN_NM")
-        if sigun.text not in sigunList:
-            sigunList.append(sigun.text)
+        if sigun.text not in sigunListBaseball:
+            sigunListBaseball.append(sigun.text)
 
-    return sigunList
+    tree2 = ElementTree.fromstring(soccer)
+
+    sigunListSoccer =[]
+
+    itemElements = tree2.iter("row")
+    for item in itemElements:
+        sigun = item.find("SIGUN_NM")
+        if sigun.text not in sigunListSoccer:
+            sigunListSoccer.append(sigun.text)
+
+
+    return sigunListBaseball, sigunListSoccer
+
+baseball = getDataBaseball()
+soccer = getDataSoccer()

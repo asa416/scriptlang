@@ -5,7 +5,7 @@
 from tkinter import *
 from tkinter import font
 import tkinter.ttk as myTtk
-from data import makeList, sportsList
+from data import *
 
 
 
@@ -16,9 +16,50 @@ def buttonClick(num):
         else:
             v['relief']='raised'             
 
+def event_for_listbox(event):
+    selection = event.widget.curselection()
+    if selection:
+        index = selection[0]
+        data = event.widget.get(index)
+        print(data)
+
+def getStr(s):
+    return ''if not s else s
+
+def showInfo():
+    from xml.etree import ElementTree
+    global listBox
+
+    sels = listBox.curselection()
+    iIndex = 0 if len(sels) == 0 else listBox.curselection()[0]
+    
+    tree = ElementTree.fromstring(baseball)
+    elements = tree.iter('row')
+
+
+def SearchLibrary():
+    from xml.etree import ElementTree
+
+    global listBox
+    listBox.delete(0, listBox.size())
+
+    tree = ElementTree.fromstring(baseball)
+    elements = tree.iter('row')
+
+    i = 1
+    for item in elements:
+        part_el = item.find('SIGUN_NM')
+
+        if combo.get() == part_el.text:
+            _text = '[' + str(i) + ']' + getStr(item.find('SIGUN_NM').text)\
+            + ':' + getStr(item.find('FACLT_NM').text)
+            listBox.insert(i - 1, _text)
+            i = i + 1  
+
+
 # 윈도우 생성
 window = Tk()
-window.geometry("600x800")
+window.geometry("700x800")
 window.configure(bg='blue')
 window.resizable(width=False, height=False)
 
@@ -67,12 +108,12 @@ LBScrollbar = Scrollbar(frameCombo)
 SearchListBox = Listbox(frameCombo,font=fontNormal,activestyle='none',width=10,
 height=1,borderwidth=12,relief='ridge',yscrollcommand=LBScrollbar.set)
 #sigun_list=['가평군', '고양시', '광명시', '구리시', '김포시', '남양주시', '부천시', '성남시', '수원시', '시흥시', '안산시', '안성시', '안양시', '양주시', '양평군', '여주시', '연천군', '용인시', '의정부시', '이천시', '파주시', '평택시', '포천시', '하남시', '화성시']
-sigun_list = makeList('Baseball')
-combo  = myTtk.Combobox(frameCombo, values=sigun_list)
+sigun_list = makeList()
+combo  = myTtk.Combobox(frameCombo, values=sigun_list[0])
 combo.pack(side=LEFT, expand=True, fill='both')
 combo.set('시군 선택')
 
-searchButton=Button(frameCombo,font=fontNormal,text='검색')
+searchButton=Button(frameCombo,font=fontNormal,text='검색',command=SearchLibrary)
 searchButton.pack(side='right',padx=10,fill='y')
 
 # 리스트, 정보 출력
@@ -83,7 +124,7 @@ infoframe.pack(side='right',fill='both', expand=True, padx=5)
 
 LBScrollbar=Scrollbar(sigunList)
 listBox=Listbox(sigunList, selectmode='extended',font=fontNormal,width=10,height=15,borderwidth=12,relief='ridge',yscrollcommand=LBScrollbar.set)
-# listBox.bind('<<ListBoxSelect>>',event_for_listbox)
+listBox.bind('<<ListBoxSelect>>',event_for_listbox)
 listBox.pack(side='left',anchor='n',expand=True,fill='both')
 LBScrollbar.pack(side='right',fill='y')
 LBScrollbar.config(command=listBox.yview)
