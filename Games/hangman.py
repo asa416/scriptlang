@@ -126,7 +126,7 @@ class Hangman:
         self.draw()           
 
 # Initialize words, get the words from a file
-infile = open("Games\hangman.txt", "r")
+infile = open("hangman.txt", "r")
 words = infile.read().split()
 
 window = Tk() # Create a window
