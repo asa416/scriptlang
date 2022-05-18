@@ -12,9 +12,14 @@ curList = []
 info_str = []
 BGCOLOR = '#87CEEB'
 
+BASEBALL, SOCCER, TENNIS = range(3)
+sportsNow = BASEBALL
+
 # 버튼 클릭시
 #------------------------------------------------------------------------------
 def buttonClick(num):
+    global sportsNow
+    sportsNow = num
     for k, v in sportsButton.items():
         if k == sportsList[num]:
             v['relief']='sunken'
@@ -37,7 +42,10 @@ def showInfo(event):
     sels = listBox.curselection()
     iIndex = 0 if len(sels) == 0 else listBox.curselection()[0]
     
-    tree = ElementTree.fromstring(baseball)
+    if sportsNow == BASEBALL:
+        tree = ElementTree.fromstring(baseball)
+    elif sportsNow == SOCCER:
+        tree = ElementTree.fromstring(soccer)
     elements = tree.iter('row')
 
     for item in elements:
@@ -47,6 +55,16 @@ def showInfo(event):
             info_str.append(getStr(item.find('FACLT_NM').text)+'\n')
             info_str.append("준공연도: "+getStr(item.find('COMPLTN_YY').text)+'\n')
             info_str.append("주소: "+getStr(item.find('REFINE_LOTNO_ADDR').text)+'\n')
+            info_str.append("면적: "+getStr(item.find('AR').text)+'m^2\n')
+            if sportsNow == BASEBALL:
+                info_str.append("내야바닥: "+getStr(item.find('INFLD_BOTM_MATRL_NM').text)+'\n')
+                info_str.append("외야바닥: "+getStr(item.find('OUTFLD_BOTM_MATRL_NM').text)+'\n')
+                info_str.append("중앙길이: "+getStr(item.find('CENTER_LENG').text)+'m\n')
+                info_str.append("1-3루길이: "+getStr(item.find('F_THDBASE_LENG').text)+'m\n')
+            elif sportsNow == SOCCER:
+                info_str.append("바닥: "+getStr(item.find('BOTM_MATRL_NM').text)+'\n')
+                info_str.append("폭: "+getStr(item.find('BT').text)+'m\n')
+                info_str.append("길이: "+getStr(item.find('LENG').text)+'m\n')
             break
     for i in range(len(info_str)):
         info.insert(float(i + 1), info_str[i])
@@ -59,7 +77,10 @@ def SearchLibrary():
     global listBox
     listBox.delete(0, listBox.size())
 
-    tree = ElementTree.fromstring(baseball)
+    if sportsNow == BASEBALL:
+        tree = ElementTree.fromstring(baseball)
+    elif sportsNow == SOCCER:
+        tree = ElementTree.fromstring(soccer)
     elements = tree.iter('row')
 
     global curList
