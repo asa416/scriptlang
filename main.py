@@ -7,6 +7,8 @@ from tkinter import font
 import tkinter.ttk as myTtk
 from tokenize import cookie_re
 from data import *
+from send_email import sendMail
+from email.mime.text import MIMEText
 
 curList = []
 info_str = []
@@ -14,6 +16,30 @@ BGCOLOR = '#87CEEB'
 
 BASEBALL, SOCCER, TENNIS = range(3)
 sportsNow = BASEBALL
+
+popup = inputEmail = btnEmail = None
+addrEmail = None
+
+def onEmailInput():
+    global addrEmail
+    addrEmail = inputEmail.get()
+    send(addrEmail)
+    popup.destroy() # popup 내리기
+
+def onEmailPopup(event):
+    global window, addrEmail, popup
+    addrEmail = None
+    popup = Toplevel(window) # popup 띄우기
+    popup.geometry("300x150")
+    popup.title("받을 이메일 주소 입력")
+    
+    global inputEmail, btnEmail
+    inputEmail = Entry(popup, width = 200,)
+    inputEmail.pack(fill='x', padx=10, expand=True)
+   
+    btnEmail = Button(popup, text="확인", command=onEmailInput)
+    btnEmail.pack(anchor="s", padx=10, pady=10)
+
 
 # 버튼 클릭시
 #------------------------------------------------------------------------------
@@ -98,15 +124,12 @@ def SearchLibrary():
 
 # 이메일 보내기!
 ##------------------------------------------------------------------------------
-def sendButtonClick(event):
-    from send_email import sendMail
-    from email.mime.text import MIMEText
-
+def send(recipientAddr):
     if len(info_str) == 0:
         return
 
     senderAddr = 'cheese04@tukorea.ac.kr'
-    recipientAddr = 'asa4163@naver.com'
+    # recipientAddr = 'asa4163@naver.com'
 
     sendText = ''
     for str in info_str:
@@ -202,7 +225,7 @@ info.pack(side='left', fill='both')
 # 메일, 지도 버튼
 mailButton = Button(frameB, padx=5, width = 10, height = 3,text='Mail')
 mapButton = Button(frameB, padx=5, width=10, height=3,text='Map')
-mailButton.bind("<Button-1>", sendButtonClick)
+mailButton.bind("<Button-1>", onEmailPopup)
 mailButton.pack(side='left')
 mapButton.pack(side='right')
 
