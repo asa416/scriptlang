@@ -96,6 +96,29 @@ def SearchLibrary():
             i = i + 1  
             curList.append(getStr(item.find('FACLT_NM').text))
 
+# 이메일 보내기!
+##------------------------------------------------------------------------------
+def sendButtonClick(event):
+    from send_email import sendMail
+    from email.mime.text import MIMEText
+
+    if len(info_str) == 0:
+        return
+
+    senderAddr = 'cheese04@tukorea.ac.kr'
+    recipientAddr = 'asa4163@naver.com'
+
+    sendText = ''
+    for str in info_str:
+        sendText += str
+
+    msg = MIMEText(sendText)
+    msg['Subject'] = "경기도 공공시설체육 정보입니다."
+    msg['From'] = senderAddr
+    msg['To'] = recipientAddr
+
+    sendMail(senderAddr,recipientAddr,msg)
+
 # 윈도우 생성
 window = Tk()
 window.title("HSJ")
@@ -179,6 +202,7 @@ info.pack(side='left', fill='both')
 # 메일, 지도 버튼
 mailButton = Button(frameB, padx=5, width = 10, height = 3,text='Mail')
 mapButton = Button(frameB, padx=5, width=10, height=3,text='Map')
+mailButton.bind("<Button-1>", sendButtonClick)
 mailButton.pack(side='left')
 mapButton.pack(side='right')
 
