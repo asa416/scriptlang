@@ -14,7 +14,7 @@ def getDataBaseball():
     })
 
     request = urllib.request.Request(url+unquote(queryParams))
-    print ('Your Request:\n'+url+queryParams)
+    # print ('Your Request:\n'+url+queryParams)
     request.get_method = lambda: 'GET'
     response_body = urlopen(request).read().decode('utf-8')
     return response_body
@@ -29,6 +29,51 @@ def getDataSoccer():
     })
 
     request = urllib.request.Request(url+unquote(queryParams))
+    # print ('Your Request:\n'+url+queryParams)
+    request.get_method = lambda: 'GET'
+    response_body = urlopen(request).read().decode('utf-8')
+    return response_body
+
+def getDataTennis():
+    url = 'https://openapi.gg.go.kr/PublicTennis'
+
+    queryParams = '?' + urlencode({ quote_plus('KEY') : 'ff5245121c4440f59a365a2d57e923d0',
+    quote_plus('Type'):'xml',
+    quote_plus('pSize'):'300',
+    quote_plus('pIndex'):'1'
+    })
+
+    request = urllib.request.Request(url+unquote(queryParams))
+    # print ('Your Request:\n'+url+queryParams)
+    request.get_method = lambda: 'GET'
+    response_body = urlopen(request).read().decode('utf-8')
+    return response_body
+
+def getDataSwim():
+    url = 'https://openapi.gg.go.kr/PublicSwimmingPool'
+
+    queryParams = '?' + urlencode({ quote_plus('KEY') : '53976cb9ccc8418e97a1e06da922d0a0',
+    quote_plus('Type'):'xml',
+    quote_plus('pSize'):'300',
+    quote_plus('pIndex'):'1'
+    })
+
+    request = urllib.request.Request(url+unquote(queryParams))
+    # print ('Your Request:\n'+url+queryParams)
+    request.get_method = lambda: 'GET'
+    response_body = urlopen(request).read().decode('utf-8')
+    return response_body
+
+def getDataBall():
+    url = 'https://openapi.gg.go.kr/PublicGameOfBallGymnasium'
+
+    queryParams = '?' + urlencode({ quote_plus('KEY') : 'c5d4e782fc8c4037b2f3051f7c82b46b',
+    quote_plus('Type'):'xml',
+    quote_plus('pSize'):'300',
+    quote_plus('pIndex'):'1'
+    })
+
+    request = urllib.request.Request(url+unquote(queryParams))
     print ('Your Request:\n'+url+queryParams)
     request.get_method = lambda: 'GET'
     response_body = urlopen(request).read().decode('utf-8')
@@ -36,35 +81,28 @@ def getDataSoccer():
 
 sportsList = ['Baseball', 'Soccer', 'Tennis']
 
-def makeList():
-    from xml.dom.minidom import parseString
+def makeList(sport):
     from xml.etree import ElementTree
 
-    global baseball, soccer
+    newList = []
 
-
-    tree = ElementTree.fromstring(baseball)
-
-    sigunListBaseball =[]
-
-    itemElements = tree.iter("row")
+    tree = ElementTree.fromstring(sport)
+    itemElements = tree.iter('row')
     for item in itemElements:
         sigun = item.find("SIGUN_NM")
-        if sigun.text not in sigunListBaseball:
-            sigunListBaseball.append(sigun.text)
+        if sigun.text not in newList:
+            newList.append(sigun.text)
+    
+    return newList
 
-    tree2 = ElementTree.fromstring(soccer)
+def makeLists():
+    
+    global baseball, soccer, tennis, swim, ballGym
 
-    sigunListSoccer =[]
-
-    itemElements = tree2.iter("row")
-    for item in itemElements:
-        sigun = item.find("SIGUN_NM")
-        if sigun.text not in sigunListSoccer:
-            sigunListSoccer.append(sigun.text)
-
-
-    return sigunListBaseball, sigunListSoccer
+    return (makeList(baseball), makeList(soccer), makeList(tennis), makeList(swim), makeList(ballGym))
 
 baseball = getDataBaseball()
 soccer = getDataSoccer()
+tennis = getDataTennis()
+swim = getDataSwim()
+ballGym = getDataBall()

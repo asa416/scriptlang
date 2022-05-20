@@ -14,7 +14,7 @@ curList = []
 info_str = []
 BGCOLOR = '#87CEEB'
 
-BASEBALL, SOCCER, TENNIS = range(3)
+BASEBALL, SOCCER, TENNIS, SWIM, BALLGYM = range(5)
 sportsNow = BASEBALL
 
 popup = inputEmail = btnEmail = None
@@ -47,7 +47,7 @@ def buttonClick(num):
     global sportsNow
     sportsNow = num
     for k, v in sportsButton.items():
-        if k == sportsList[num]:
+        if k == sportsNow:
             v['relief']='sunken'
         else:
             v['relief']='raised'             
@@ -72,6 +72,12 @@ def showInfo(event):
         tree = ElementTree.fromstring(baseball)
     elif sportsNow == SOCCER:
         tree = ElementTree.fromstring(soccer)
+    elif sportsNow == TENNIS:
+        tree = ElementTree.fromstring(tennis)
+    elif sportsNow == SWIM:
+        tree = ElementTree.fromstring(swim)
+    elif sportsNow == BALLGYM:
+        tree = ElementTree.fromstring(ballGym)
     elements = tree.iter('row')
 
     for item in elements:
@@ -107,6 +113,13 @@ def SearchLibrary():
         tree = ElementTree.fromstring(baseball)
     elif sportsNow == SOCCER:
         tree = ElementTree.fromstring(soccer)
+    elif sportsNow == TENNIS:
+        tree = ElementTree.fromstring(tennis)
+    elif sportsNow == SWIM:
+        tree = ElementTree.fromstring(swim)
+    elif sportsNow == BALLGYM:
+        tree = ElementTree.fromstring(ballGym)
+
     elements = tree.iter('row')
 
     global curList
@@ -189,16 +202,22 @@ buttonSoccer=Button(frameMenu, relief='raised', padx=5, width=10, height=3, text
 buttonSoccer.grid(row=0,column=1,sticky='ew', padx=5)
 buttonTennis=Button(frameMenu, relief='raised', padx=5, width=10, height=3, text='테니스')
 buttonTennis.grid(row=0,column=2,sticky='ew', padx=5)
-sportsButton = {'Baseball': buttonBaseball, 'Soccer':buttonSoccer, 'Tennis':buttonTennis}
+buttonSwim=Button(frameMenu, relief='raised', padx=5, width=10, height=3, text='수영장')
+buttonSwim.grid(row=0,column=3,sticky='ew', padx=5)
+buttonBall=Button(frameMenu, relief='raised', padx=5, width=10, height=3, text='구기체육관')
+buttonBall.grid(row=0,column=4,sticky='ew', padx=5)
+sportsButton = {BASEBALL:buttonBaseball, SOCCER:buttonSoccer, TENNIS:buttonTennis, SWIM:buttonSwim, BALLGYM:buttonBall}
 buttonBaseball['command']=lambda:buttonClick(0)
 buttonSoccer['command']=lambda:buttonClick(1)
 buttonTennis['command']=lambda:buttonClick(2)
+buttonSwim['command']=lambda:buttonClick(3)
+buttonBall['command']=lambda:buttonClick(4)
 
 # 시군 콤보박스
 LBScrollbar = Scrollbar(frameCombo)
 SearchListBox = Listbox(frameCombo,font=fontNormal,activestyle='none',width=10,
 height=1,borderwidth=12,relief='ridge',yscrollcommand=LBScrollbar.set)
-sigun_list = makeList()
+sigun_list = makeLists()
 combo  = myTtk.Combobox(frameCombo, values=sigun_list[0])
 combo.pack(side=LEFT, expand=True, fill='both')
 combo.set('시군 선택')
