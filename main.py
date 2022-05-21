@@ -87,16 +87,36 @@ def showInfo(event):
             info_str.append(getStr(item.find('FACLT_NM').text)+'\n')
             info_str.append("준공연도: "+getStr(item.find('COMPLTN_YY').text)+'\n')
             info_str.append("주소: "+getStr(item.find('REFINE_LOTNO_ADDR').text)+'\n')
-            info_str.append("면적: "+getStr(item.find('AR').text)+'m^2\n')
             if sportsNow == BASEBALL:
+                info_str.append("면적: "+getStr(item.find('AR').text)+'m^2\n')
                 info_str.append("내야바닥: "+getStr(item.find('INFLD_BOTM_MATRL_NM').text)+'\n')
                 info_str.append("외야바닥: "+getStr(item.find('OUTFLD_BOTM_MATRL_NM').text)+'\n')
                 info_str.append("중앙길이: "+getStr(item.find('CENTER_LENG').text)+'m\n')
                 info_str.append("1-3루길이: "+getStr(item.find('F_THDBASE_LENG').text)+'m\n')
             elif sportsNow == SOCCER:
+                info_str.append("면적: "+getStr(item.find('AR').text)+'m^2\n')
                 info_str.append("바닥: "+getStr(item.find('BOTM_MATRL_NM').text)+'\n')
                 info_str.append("폭: "+getStr(item.find('BT').text)+'m\n')
                 info_str.append("길이: "+getStr(item.find('LENG').text)+'m\n')
+            elif sportsNow == TENNIS:
+                info_str.append("면적: "+getStr(item.find('AR').text)+'m^2\n')
+                info_str.append("바닥: "+getStr(item.find('BOTM_MATRL_NM').text)+'\n')
+                info_str.append("코트 면 수: "+getStr(item.find('COURT_PLANE_CNT').text)+'\n')
+            elif sportsNow == SWIM:
+                info_str.append("정규 경영장 길이: "+getStr(item.find('REGULR_RELYSWIMPL_LENG').text)+'m\n')
+                info_str.append("정규 경영장 폭: "+getStr(item.find('REGULR_RELYSWIMPL_BT').text)+'m\n')
+                info_str.append("정규 경영장 레인 수: "+getStr(item.find('REGULR_RELYSWIMPL_LANE_CNT').text)+'\n')
+                info_str.append("비정규 경영장 길이: "+getStr(item.find('IRREGULR_RELYSWIMPL_LENG').text)+'m\n')
+                info_str.append("비정규 경영장 폭: "+getStr(item.find('IRREGULR_RELYSWIMPL_BT').text)+'m\n')
+                info_str.append("비정규 경영장 레인 수: "+getStr(item.find('IRREGULR_RELYSWIMPL_LANE_CNT').text)+'\n')        
+            elif sportsNow == BALLGYM:
+                info_str.append("가능 종목: "+getStr(item.find('POSBL_ITEM_NM').text)+'\n')
+                info_str.append("바닥: "+getStr(item.find('BOTM_MATRL_NM').text)+'\n')
+                info_str.append("면적: "+getStr(item.find('AR').text)+'m^2\n')
+                info_str.append("높이: "+getStr(item.find('HG').text)+'m\n')
+                info_str.append("길이: "+getStr(item.find('LENG').text)+'m\n')
+                info_str.append("폭: "+getStr(item.find('BT').text)+'m\n')
+                pass
             break
     for i in range(len(info_str)):
         info.insert(float(i + 1), info_str[i])
