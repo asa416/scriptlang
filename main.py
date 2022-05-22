@@ -182,6 +182,12 @@ window.geometry("800x600")
 window.configure(bg=BGCOLOR)
 window.resizable(width=False, height=False)
 
+# 이미지 생성
+baseballPhoto = PhotoImage(file='image/baseball.png').subsample(10)
+soccerPhoto = PhotoImage(file='image/soccer.png').subsample(10)
+tennisPhoto = PhotoImage(file='image/tennis.png').subsample(10)
+swimPhoto = PhotoImage(file='image/swim.png').subsample(10)
+ballgymPhoto = PhotoImage(file='image/ballgym.png').subsample(10)
 # 폰트 설정
 fontTitle = font.Font(window,size=18,weight='bold',family='바탕체')
 fontNormal = font.Font(window, size=15, weight='bold')
@@ -216,15 +222,15 @@ MainText = Label(frameTitle,font=fontTitle,text='경기도 공공체육시설 �
 MainText.pack(anchor='center',fill='both')
 
 # 종목 선택 버튼
-buttonBaseball=Button(frameMenu, relief='sunken', padx=5, width=10, height=3, text='야구')
+buttonBaseball=Button(frameMenu, relief='sunken', padx=5, width=100, height=60, image=baseballPhoto, anchor=CENTER, bg=BGCOLOR)
 buttonBaseball.grid(row=0,column=0,sticky='ew',padx=5)
-buttonSoccer=Button(frameMenu, relief='raised', padx=5, width=10, height=3, text='축구')
+buttonSoccer=Button(frameMenu, relief='raised', padx=5, width=100, height=60, image=soccerPhoto, anchor=CENTER, bg=BGCOLOR)
 buttonSoccer.grid(row=0,column=1,sticky='ew', padx=5)
-buttonTennis=Button(frameMenu, relief='raised', padx=5, width=10, height=3, text='테니스')
+buttonTennis=Button(frameMenu, relief='raised', padx=5, width=100, height=60, image=tennisPhoto, anchor=CENTER, bg=BGCOLOR)
 buttonTennis.grid(row=0,column=2,sticky='ew', padx=5)
-buttonSwim=Button(frameMenu, relief='raised', padx=5, width=10, height=3, text='수영장')
+buttonSwim=Button(frameMenu, relief='raised', padx=5, width=100, height=60, image=swimPhoto, anchor=CENTER, bg=BGCOLOR)
 buttonSwim.grid(row=0,column=3,sticky='ew', padx=5)
-buttonBall=Button(frameMenu, relief='raised', padx=5, width=10, height=3, text='구기체육관')
+buttonBall=Button(frameMenu, relief='raised', padx=5, width=100, height=60, image=ballgymPhoto, anchor=CENTER, bg=BGCOLOR)
 buttonBall.grid(row=0,column=4,sticky='ew', padx=5)
 sportsButton = {BASEBALL:buttonBaseball, SOCCER:buttonSoccer, TENNIS:buttonTennis, SWIM:buttonSwim, BALLGYM:buttonBall}
 buttonBaseball['command']=lambda:buttonClick(0)

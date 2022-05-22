@@ -1,23 +1,13 @@
-#------------------------------------------------------------------------------
-# 실험용 시군명 리스트 만들기
-#------------------------------------------------------------------------------
-from xml.etree import ElementTree
+from tkinter import *
 
-SigunList = []
+window = Tk()
+window.title("TEST")
+window.geometry("800x600")
+window.resizable(width=False, height=False)
 
-with open('공공체육시설현황(야구).xml','rb') as f:
-    strXml = f.read().decode('UTF-8')
-parseData = ElementTree.fromstring(strXml)
-elements=parseData.iter('row')
+test_image = PhotoImage(file='image/baseball.png').subsample(20)
 
-i = 1
-for item in elements:
-    part_el = item.find('SIGUN_NM')
+bnt = Button(window,image=test_image)
+bnt.pack()
 
-    if part_el.text not in SigunList:
-        SigunList.append(part_el.text)
-
-SigunList.remove("시군명")
-
-print(SigunList)
-
+window.mainloop()
