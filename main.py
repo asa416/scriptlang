@@ -267,13 +267,13 @@ buttonTennis['command']=lambda:buttonClick(TENNIS)
 buttonBall = ImageButton(frameMenu)
 buttonBall.setImage('images/ballgym.png')
 buttonBall.configure(bg=BGCOLOR, bd=5)
-buttonBall.grid(row=0,column=3,sticky='ew',padx=5)
+buttonBall.grid(row=0,column=4,sticky='ew',padx=5)
 buttonBall['command']=lambda:buttonClick(BALLGYM)
 
 buttonSwim = ImageButton(frameMenu)
 buttonSwim.setImage('images/swim.png')
 buttonSwim.configure(bg=BGCOLOR, bd=5)
-buttonSwim.grid(row=0,column=4,sticky='ew',padx=5)
+buttonSwim.grid(row=0,column=3,sticky='ew',padx=5)
 buttonSwim['command']=lambda:buttonClick(SWIM)
 
 sportsButton = {BASEBALL:buttonBaseball, SOCCER:buttonSoccer, TENNIS:buttonTennis, BALLGYM:buttonBall, SWIM:buttonSwim, }
