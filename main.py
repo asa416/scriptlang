@@ -183,12 +183,12 @@ window.configure(bg=BGCOLOR)
 window.resizable(width=False, height=False)
 
 # 이미지 생성
-baseballPhoto = PhotoImage(file='image/baseball.png').subsample(10)
-soccerPhoto = PhotoImage(file='image/soccer.png').subsample(10)
-tennisPhoto = PhotoImage(file='image/tennis.png').subsample(10)
-swimPhoto = PhotoImage(file='image/swim.png').subsample(10)
-ballgymPhoto = PhotoImage(file='image/ballgym.png').subsample(10)
-mailPhoto = PhotoImage(file='image/gmail.png').subsample(10)
+baseballPhoto = PhotoImage(file='images/baseball.png').subsample(10)
+soccerPhoto = PhotoImage(file='images/soccer.png').subsample(10)
+tennisPhoto = PhotoImage(file='images/tennis.png').subsample(10)
+swimPhoto = PhotoImage(file='images/swim.png').subsample(10)
+ballgymPhoto = PhotoImage(file='images/ballgym.png').subsample(10)
+mailPhoto = PhotoImage(file='images/gmail.png').subsample(10)
 
 # 폰트 설정
 fontTitle = font.Font(window,size=18,weight='bold',family='휴먼둥근헤드라인')
