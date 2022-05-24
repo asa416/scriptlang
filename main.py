@@ -62,6 +62,8 @@ def onEmailPopup():
 def buttonClick(num):
     global sportsNow
     sportsNow = num
+    global combo
+    combo.configure(values=sigun_list[num])
     for k, v in sportsButton.items():
         if k == sportsNow:
             v['relief']='sunken'
