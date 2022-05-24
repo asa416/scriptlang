@@ -9,7 +9,7 @@ def getDataBaseball():
 
     queryParams = '?' + urlencode({ quote_plus('KEY') : '8b7e606c85b44ac2bbd02d70fcbc135d',
     quote_plus('Type'):'xml',
-    quote_plus('pSize'):'300',
+    quote_plus('pSize'):'1000',
     quote_plus('pIndex'):'1'
     })
 
@@ -24,7 +24,7 @@ def getDataSoccer():
 
     queryParams = '?' + urlencode({ quote_plus('KEY') : 'cc3702232f9d4e70a663bc53279486e1',
     quote_plus('Type'):'xml',
-    quote_plus('pSize'):'300',
+    quote_plus('pSize'):'1000',
     quote_plus('pIndex'):'1'
     })
 
@@ -39,7 +39,7 @@ def getDataTennis():
 
     queryParams = '?' + urlencode({ quote_plus('KEY') : 'ff5245121c4440f59a365a2d57e923d0',
     quote_plus('Type'):'xml',
-    quote_plus('pSize'):'300',
+    quote_plus('pSize'):'1000',
     quote_plus('pIndex'):'1'
     })
 
@@ -54,7 +54,7 @@ def getDataSwim():
 
     queryParams = '?' + urlencode({ quote_plus('KEY') : '53976cb9ccc8418e97a1e06da922d0a0',
     quote_plus('Type'):'xml',
-    quote_plus('pSize'):'300',
+    quote_plus('pSize'):'1000',
     quote_plus('pIndex'):'1'
     })
 
@@ -69,7 +69,7 @@ def getDataBall():
 
     queryParams = '?' + urlencode({ quote_plus('KEY') : 'c5d4e782fc8c4037b2f3051f7c82b46b',
     quote_plus('Type'):'xml',
-    quote_plus('pSize'):'300',
+    quote_plus('pSize'):'1000',
     quote_plus('pIndex'):'1'
     })
 

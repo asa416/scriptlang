@@ -3,6 +3,7 @@
 # By SeokJu
 #------------------------------------------------------------------------------
 from tkinter import *
+from tkinter import messagebox
 from tkinter import font
 import tkinter.ttk as myTtk
 from tokenize import cookie_re
@@ -10,16 +11,30 @@ from data import *
 from send_email import sendMail
 from email.mime.text import MIMEText
 from image import ImageButton
+from mapview import Map
 
 curList = []
 info_str = []
 BGCOLOR = '#87CEEB'
 
-BASEBALL, SOCCER, TENNIS, SWIM, BALLGYM = range(5)
+BASEBALL, SOCCER, TENNIS, BALLGYM, SWIM = range(5)
 sportsNow = BASEBALL
 
 popup = inputEmail = btnEmail = None
 addrEmail = None
+
+curName = ''
+curPos = []
+
+# 지도를 띄워봅시다
+def makeMap():
+    if len(curPos) == 0:
+        messagebox.showinfo("검색 불가능", "지도 정보가 없습니다.")
+        return
+    if curPos[0] == '':
+        messagebox.showinfo("검색 불가능", "지도 정보가 없습니다")
+        return
+    newMap = Map(window, float(curPos[0]), float(curPos[1]), curName)
 
 def onEmailInput():
     global addrEmail
@@ -30,12 +45,12 @@ def onEmailInput():
 def onEmailPopup():
     global window, addrEmail, popup
     addrEmail = None
-    popup = Toplevel(window) # popup 띄우기
+    popup = Toplevel(window, bg=BGCOLOR) # popup 띄우기
     popup.geometry("300x150")
     popup.title("받을 이메일 주소 입력")
     
     global inputEmail, btnEmail
-    inputEmail = Entry(popup, width = 200,)
+    inputEmail = Entry(popup, width = 200)
     inputEmail.pack(fill='x', padx=10, expand=True)
    
     btnEmail = Button(popup, text="확인", command=onEmailInput)
@@ -61,6 +76,10 @@ def getStr(s):
 def showInfo(event):
     from xml.etree import ElementTree
     global listBox
+    global curName
+    global curPos
+
+    curPos = []
 
     global info_str
     info_str = []
@@ -109,7 +128,9 @@ def showInfo(event):
                 info_str.append("정규 경영장 레인 수: "+getStr(item.find('REGULR_RELYSWIMPL_LANE_CNT').text)+'\n')
                 info_str.append("비정규 경영장 길이: "+getStr(item.find('IRREGULR_RELYSWIMPL_LENG').text)+'m\n')
                 info_str.append("비정규 경영장 폭: "+getStr(item.find('IRREGULR_RELYSWIMPL_BT').text)+'m\n')
-                info_str.append("비정규 경영장 레인 수: "+getStr(item.find('IRREGULR_RELYSWIMPL_LANE_CNT').text)+'\n')        
+                info_str.append("비정규 경영장 레인 수: "+getStr(item.find('IRREGULR_RELYSWIMPL_LANE_CNT').text)+'\n')
+                info_str.append("지도 검색 불가능")
+                break        
             elif sportsNow == BALLGYM:
                 info_str.append("가능 종목: "+getStr(item.find('POSBL_ITEM_NM').text)+'\n')
                 info_str.append("바닥: "+getStr(item.find('BOTM_MATRL_NM').text)+'\n')
@@ -118,6 +139,13 @@ def showInfo(event):
                 info_str.append("길이: "+getStr(item.find('LENG').text)+'m\n')
                 info_str.append("폭: "+getStr(item.find('BT').text)+'m\n')
                 pass
+            curName = part_el.text
+            curPos.append(getStr(item.find('REFINE_WGS84_LAT').text))
+            curPos.append(getStr(item.find('REFINE_WGS84_LOGT').text))
+            if curPos[0] == '':
+                info_str.append("지도 검색 불가능")
+            else:
+                info_str.append("지도 검색 가능")
             break
     for i in range(len(info_str)):
         info.insert(float(i + 1), info_str[i])
@@ -150,11 +178,12 @@ def SearchLibrary():
     for item in elements:
         part_el = item.find('SIGUN_NM')
 
-        if combo.get() == part_el.text:
-            _text = "["+getStr(item.find('FACLT_NM').text)+"]"
-            listBox.insert(i - 1, _text)
-            i = i + 1  
-            curList.append(getStr(item.find('FACLT_NM').text))
+        if getStr(item.find('FACLT_NM').text) not in curList:
+            if combo.get() == part_el.text:
+                _text = "["+getStr(item.find('FACLT_NM').text)+"]"
+                listBox.insert(i - 1, _text)
+                i = i + 1  
+                curList.append(getStr(item.find('FACLT_NM').text))
 
 # 이메일 보내기!
 ##------------------------------------------------------------------------------
@@ -235,20 +264,19 @@ buttonTennis.configure(bg=BGCOLOR, bd=5)
 buttonTennis.grid(row=0,column=2,sticky='ew',padx=5)
 buttonTennis['command']=lambda:buttonClick(TENNIS)
 
+buttonBall = ImageButton(frameMenu)
+buttonBall.setImage('images/ballgym.png')
+buttonBall.configure(bg=BGCOLOR, bd=5)
+buttonBall.grid(row=0,column=3,sticky='ew',padx=5)
+buttonBall['command']=lambda:buttonClick(BALLGYM)
 
 buttonSwim = ImageButton(frameMenu)
 buttonSwim.setImage('images/swim.png')
 buttonSwim.configure(bg=BGCOLOR, bd=5)
-buttonSwim.grid(row=0,column=3,sticky='ew',padx=5)
+buttonSwim.grid(row=0,column=4,sticky='ew',padx=5)
 buttonSwim['command']=lambda:buttonClick(SWIM)
 
-buttonBall = ImageButton(frameMenu)
-buttonBall.setImage('images/ballgym.png')
-buttonBall.configure(bg=BGCOLOR, bd=5)
-buttonBall.grid(row=0,column=4,sticky='ew',padx=5)
-buttonBall['command']=lambda:buttonClick(BALLGYM)
-
-sportsButton = {BASEBALL:buttonBaseball, SOCCER:buttonSoccer, TENNIS:buttonTennis, SWIM:buttonSwim, BALLGYM:buttonBall}
+sportsButton = {BASEBALL:buttonBaseball, SOCCER:buttonSoccer, TENNIS:buttonTennis, BALLGYM:buttonBall, SWIM:buttonSwim, }
 
 
 # 시군 콤보박스
@@ -284,6 +312,9 @@ mailButton = ImageButton(frameB)
 mailButton.setImage('images/gmail.png')
 mailButton.configure(padx=5, bg=BGCOLOR, bd=0)
 mapButton = ImageButton(frameB)
+mapButton.setImage('images/map.png')
+mapButton.configure(padx=5, bg=BGCOLOR, bd=0)
+mapButton['command'] = makeMap
 mailButton['command'] = onEmailPopup
 mailButton.pack(side='left')
 mapButton.pack(side='right')
