@@ -74,7 +74,7 @@ def getDataBall():
     })
 
     request = urllib.request.Request(url+unquote(queryParams))
-    print ('Your Request:\n'+url+queryParams)
+    # print ('Your Request:\n'+url+queryParams)
     request.get_method = lambda: 'GET'
     response_body = urlopen(request).read().decode('utf-8')
     return response_body

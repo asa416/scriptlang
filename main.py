@@ -9,6 +9,7 @@ from tokenize import cookie_re
 from data import *
 from send_email import sendMail
 from email.mime.text import MIMEText
+from image import ImageButton
 
 curList = []
 info_str = []
@@ -26,7 +27,7 @@ def onEmailInput():
     send(addrEmail)
     popup.destroy() # popup 내리기
 
-def onEmailPopup(event):
+def onEmailPopup():
     global window, addrEmail, popup
     addrEmail = None
     popup = Toplevel(window) # popup 띄우기
@@ -182,14 +183,6 @@ window.geometry("800x600")
 window.configure(bg=BGCOLOR)
 window.resizable(width=False, height=False)
 
-# 이미지 생성
-baseballPhoto = PhotoImage(file='images/baseball.png').subsample(10)
-soccerPhoto = PhotoImage(file='images/soccer.png').subsample(10)
-tennisPhoto = PhotoImage(file='images/tennis.png').subsample(10)
-swimPhoto = PhotoImage(file='images/swim.png').subsample(10)
-ballgymPhoto = PhotoImage(file='images/ballgym.png').subsample(10)
-mailPhoto = PhotoImage(file='images/gmail.png').subsample(10)
-
 # 폰트 설정
 fontTitle = font.Font(window,size=18,weight='bold',family='휴먼둥근헤드라인')
 fontNormal = font.Font(window, size=15, family='휴먼매직체')
@@ -224,22 +217,39 @@ MainText = Label(frameTitle,font=fontTitle,text='경기도 공공체육시설 �
 MainText.pack(anchor='center',fill='both')
 
 # 종목 선택 버튼
-buttonBaseball=Button(frameMenu, relief='sunken', padx=5, width=100, height=60, image=baseballPhoto, anchor=CENTER, bg=BGCOLOR, bd=5)
+buttonBaseball = ImageButton(frameMenu)
+buttonBaseball.setImage('images/baseball.png')
+buttonBaseball.configure(bg=BGCOLOR, bd=5)
 buttonBaseball.grid(row=0,column=0,sticky='ew',padx=5)
-buttonSoccer=Button(frameMenu, relief='raised', padx=5, width=100, height=60, image=soccerPhoto, anchor=CENTER, bg=BGCOLOR, bd=5)
-buttonSoccer.grid(row=0,column=1,sticky='ew', padx=5)
-buttonTennis=Button(frameMenu, relief='raised', padx=5, width=100, height=60, image=tennisPhoto, anchor=CENTER, bg=BGCOLOR, bd=5)
-buttonTennis.grid(row=0,column=2,sticky='ew', padx=5)
-buttonSwim=Button(frameMenu, relief='raised', padx=5, width=100, height=60, image=swimPhoto, anchor=CENTER, bg=BGCOLOR, bd=5)
-buttonSwim.grid(row=0,column=3,sticky='ew', padx=5)
-buttonBall=Button(frameMenu, relief='raised', padx=5, width=100, height=60, image=ballgymPhoto, anchor=CENTER, bg=BGCOLOR, bd=5)
-buttonBall.grid(row=0,column=4,sticky='ew', padx=5)
+buttonBaseball['command']=lambda:buttonClick(BASEBALL)
+
+buttonSoccer = ImageButton(frameMenu)
+buttonSoccer.setImage('images/soccer.png')
+buttonSoccer.configure(bg=BGCOLOR, bd=5)
+buttonSoccer.grid(row=0,column=1,sticky='ew',padx=5)
+buttonSoccer['command']=lambda:buttonClick(SOCCER)
+
+buttonTennis = ImageButton(frameMenu)
+buttonTennis.setImage('images/tennis.png')
+buttonTennis.configure(bg=BGCOLOR, bd=5)
+buttonTennis.grid(row=0,column=2,sticky='ew',padx=5)
+buttonTennis['command']=lambda:buttonClick(TENNIS)
+
+
+buttonSwim = ImageButton(frameMenu)
+buttonSwim.setImage('images/swim.png')
+buttonSwim.configure(bg=BGCOLOR, bd=5)
+buttonSwim.grid(row=0,column=3,sticky='ew',padx=5)
+buttonSwim['command']=lambda:buttonClick(SWIM)
+
+buttonBall = ImageButton(frameMenu)
+buttonBall.setImage('images/ballgym.png')
+buttonBall.configure(bg=BGCOLOR, bd=5)
+buttonBall.grid(row=0,column=4,sticky='ew',padx=5)
+buttonBall['command']=lambda:buttonClick(BALLGYM)
+
 sportsButton = {BASEBALL:buttonBaseball, SOCCER:buttonSoccer, TENNIS:buttonTennis, SWIM:buttonSwim, BALLGYM:buttonBall}
-buttonBaseball['command']=lambda:buttonClick(0)
-buttonSoccer['command']=lambda:buttonClick(1)
-buttonTennis['command']=lambda:buttonClick(2)
-buttonSwim['command']=lambda:buttonClick(3)
-buttonBall['command']=lambda:buttonClick(4)
+
 
 # 시군 콤보박스
 LBScrollbar = Scrollbar(frameCombo)
@@ -270,9 +280,11 @@ info = Text(infoframe,font=fontNormal,width=50, height=15)
 info.pack(side='left', fill='both')
 
 # 메일, 지도 버튼
-mailButton = Button(frameB, padx=5, width = 100, height = 50, image=mailPhoto, bg=BGCOLOR, bd=0)
-mapButton = Button(frameB, padx=5, width=10, height=3,text='Map')
-mailButton.bind("<Button-1>", onEmailPopup)
+mailButton = ImageButton(frameB)
+mailButton.setImage('images/gmail.png')
+mailButton.configure(padx=5, bg=BGCOLOR, bd=0)
+mapButton = ImageButton(frameB)
+mailButton['command'] = onEmailPopup
 mailButton.pack(side='left')
 mapButton.pack(side='right')
 

@@ -1,31 +1,17 @@
 from tkinter import *
 
 class ImageButton(Button):
-    def __init__(self, parent, width=100, height=100, filenameOrUrl = None):
-        super().__init__(parent, command=change_img)
+    def __init__(self, parent, width=100, height=100, filename = None):
+        super().__init__(parent)
         self.width = width
         self.height = height
-        if filenameOrUrl:
-            self.setImage(filenameOrUrl)
+        if filename:
+            self.setImage(filename)
 
-    def setImage(self, filenameOrUrl):
+    def setImage(self, filename):
         from PIL import Image, ImageTk
-        if filenameOrUrl.startswith('http'):
-            from io import BytesIO
-            import urllib.request
 
-            url = filenameOrUrl
-            try:
-                with urllib.request.urlopen(url) as u:
-                    raw_data = u.read()
-            except urllib.error.URLError:
-                print('urllib.error.URLError!')
-                return
-
-            im = Image.open(BytesIO(raw_data))
-        
-        elif filenameOrUrl:
-            im = (Image.open(filenameOrUrl))
+        im = (Image.open(filename))
         
         im = im.resize((self.width,self.height), Image.ANTIALIAS)
         img = ImageTk.PhotoImage(im)
