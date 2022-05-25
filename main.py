@@ -47,6 +47,7 @@ def drawGraph(canvas, canvasWidth, canvasHeight):
         if nMax == v:color='red'
         elif nMin == v:color='blue'
         else:color='grey'
+        if k == sportsNow: color='green'
 
         curHeight = maxheight*v/nMax
         top = bottom - curHeight

@@ -111,6 +111,13 @@ def makeLists():
     makeList(tennis)
     makeList(swim)
     makeList(ballGym)
+
+    # 임시방편입니다
+    # 왜 테니스만 2개씩 들어가는지 모르겠어요...
+    global myData
+    for d in myData.values():
+        d[TENNIS] //= 2
+
     return sigun_list
 
 baseball = getDataBaseball()
