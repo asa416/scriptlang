@@ -1,7 +1,7 @@
 from tkinter import *
 
 class ImageButton(Button):
-    def __init__(self, parent, width=100, height=100, filename = None):
+    def __init__(self, parent, width=100, height=50, filename = None):
         super().__init__(parent)
         self.width = width
         self.height = height

@@ -3,6 +3,14 @@ from urllib.request import urlopen
 #from urllib.parase import
 from urllib.parse import urlencode,unquote,quote_plus,quote
 import urllib
+from collections import defaultdict
+
+sigun_list = []
+
+BASEBALL, SOCCER, TENNIS, SWIM, BALLGYM = range(5)
+
+
+myData = defaultdict(lambda:defaultdict(int))
 
 def getDataBaseball():
     url = 'https://openapi.gg.go.kr/PublicTrainingFacilityBasebal'
@@ -79,30 +87,36 @@ def getDataBall():
     response_body = urlopen(request).read().decode('utf-8')
     return response_body
 
-sportsList = ['Baseball', 'Soccer', 'Tennis']
-
 def makeList(sport):
     from xml.etree import ElementTree
 
-    newList = []
+    global sigun_list
+    global myData
 
     tree = ElementTree.fromstring(sport)
     itemElements = tree.iter('row')
     for item in itemElements:
         sigun = item.find("SIGUN_NM")
-        if sigun.text not in newList:
-            newList.append(sigun.text)
-    
-    return newList
+        myData[sigun.text][sports[sport]] += 1    
+        if sigun.text not in sigun_list:
+            sigun_list.append(sigun.text)
+            
 
 def makeLists():
     
     global baseball, soccer, tennis, swim, ballGym
 
-    return (makeList(baseball), makeList(soccer), makeList(tennis), makeList(swim), makeList(ballGym))
+    makeList(baseball)
+    makeList(soccer)
+    makeList(tennis)
+    makeList(swim)
+    makeList(ballGym)
+    return sigun_list
 
 baseball = getDataBaseball()
 soccer = getDataSoccer()
 tennis = getDataTennis()
 swim = getDataSwim()
 ballGym = getDataBall()
+
+sports = {baseball:BASEBALL, soccer:SOCCER, tennis:TENNIS, swim:SWIM, ballGym:BALLGYM}

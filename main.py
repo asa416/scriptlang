@@ -17,7 +17,7 @@ curList = []
 info_str = []
 BGCOLOR = '#87CEEB'
 
-BASEBALL, SOCCER, TENNIS, BALLGYM, SWIM = range(5)
+sportsText = {BASEBALL:"Baseball", SOCCER:"Soccer", TENNIS:"Tennis", SWIM:"Swim", BALLGYM:"BallGym"}
 sportsNow = BASEBALL
 
 popup = inputEmail = btnEmail = None
@@ -25,6 +25,37 @@ addrEmail = None
 
 curName = ''
 curPos = []
+
+# 그래프를 그려봅시다
+def drawGraph(canvas, canvasWidth, canvasHeight):
+    canvas.delete('grim')
+
+    if not myData[curName] :
+        canvas.create_text(canvasWidth/2, canvasHeight/2, text='No Data', tags='grim')
+        return
+    
+    nData = len(myData[curName])
+    nMax = max(myData[curName].values())
+    nMin = min(myData[curName].values())
+    
+    canvas.create_rectangle(0, 0, canvasWidth, canvasHeight, fill='white',tag='grim')
+
+    rectWidth = canvasWidth // nData
+    bottom = canvasHeight - 20
+    maxheight = canvasHeight-40
+    for i, (k, v) in enumerate(myData[curName].items()):
+        if nMax == v:color='red'
+        elif nMin == v:color='blue'
+        else:color='grey'
+
+        curHeight = maxheight*v/nMax
+        top = bottom - curHeight
+        left = i * rectWidth
+        right = (i + 1) * rectWidth
+        canvas.create_rectangle(left,top,right,bottom,fill=color,tag='grim',activefill='yellow')
+    
+        canvas.create_text((left+right)//2, top-10,text=v,tags='grim')
+        canvas.create_text((left+right)//2, bottom+10, text=sportsText[k], tags='grim')
 
 # 지도를 띄워봅시다
 def makeMap():
@@ -63,7 +94,6 @@ def buttonClick(num):
     global sportsNow
     sportsNow = num
     global combo
-    combo.configure(values=sigun_list[num])
     for k, v in sportsButton.items():
         if k == sportsNow:
             v['relief']='sunken'
@@ -173,9 +203,12 @@ def SearchLibrary():
 
     elements = tree.iter('row')
 
-    global curList
+    global curList, curName
     curList = []
-
+    curName = combo.get()
+    global graph
+    drawGraph(graph, 300, 100)
+    
     i = 1
     for item in elements:
         part_el = item.find('SIGUN_NM')
@@ -238,7 +271,7 @@ frameList.pack(side='top',expand=True,fill='both')
 
 # 메일, 지도 버튼 프레임
 frameB = Frame(window, padx=10, pady =5, bg=BGCOLOR)
-frameB.pack(side='bottom',fill='x')
+frameB.pack(side='bottom',expand=True,fill='both')
 
 
 # GUI 배치
@@ -286,7 +319,7 @@ LBScrollbar = Scrollbar(frameCombo)
 SearchListBox = Listbox(frameCombo,font=fontNormal,activestyle='none',width=10,
 height=1,borderwidth=12,relief='ridge',yscrollcommand=LBScrollbar.set)
 sigun_list = makeLists()
-combo  = myTtk.Combobox(frameCombo, values=sigun_list[0])
+combo  = myTtk.Combobox(frameCombo, values=sigun_list)
 combo.pack(side=LEFT, expand=True, fill='both')
 combo.set('시군 선택')
 
@@ -306,7 +339,7 @@ listBox.pack(side='left',anchor='n',expand=True,fill='both')
 LBScrollbar.pack(side='right',expand=True,fill='y')
 LBScrollbar.config(command=listBox.yview)
 
-info = Text(infoframe,font=fontNormal,width=50, height=15)
+info = Text(infoframe,font=fontNormal,width=50, height=10)
 info.pack(side='left', fill='both')
 
 # 메일, 지도 버튼
@@ -320,13 +353,12 @@ mapButton['command'] = makeMap
 mailButton['command'] = onEmailPopup
 mailButton.pack(side='left')
 mapButton.pack(side='right')
+graph = Canvas(frameB, width=300, height=100, bg=BGCOLOR)
+graph.place(relx=.5, rely=.5, anchor=CENTER)
+drawGraph(graph, 300, 100)
 
-
+# 그래프 그리기
 
 # 메인루프
 #------------------------------------------------------------------------------
 window.mainloop()
-
-
-url = "https://openapi.gg.go.kr/PublicTrainingFacilityBasebal?Key=8b7e606c85b44ac2bbd02d70fcbc135d&Type=xml&pIndex=1&pSize=100"
-
