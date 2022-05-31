@@ -65,9 +65,9 @@ class Cell(Label):
 
 window = Tk()
 window.title("Tic-Tac-Toe")
-img_O = PhotoImage(file='../image/o.gif')
-img_X = PhotoImage(file='../image/x.gif')
-img_empty = PhotoImage(file='../image/empty.gif')
+img_O = PhotoImage(file='images/o.gif')
+img_X = PhotoImage(file='images/x.gif')
+img_empty = PhotoImage(file='images/empty.gif')
 
 images = {'':img_empty,'O':img_O,'X':img_X}
 
