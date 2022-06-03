@@ -216,7 +216,7 @@ def SearchLibrary():
 
         if getStr(item.find('FACLT_NM').text) not in curList:
             if combo.get() == part_el.text:
-                _text = "["+getStr(item.find('FACLT_NM').text)+"]"
+                _text = getStr(item.find('FACLT_NM').text)
                 listBox.insert(i - 1, _text)
                 i = i + 1  
                 curList.append(getStr(item.find('FACLT_NM').text))
