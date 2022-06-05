@@ -176,8 +176,10 @@ def showInfo(event):
             curPos.append(getStr(item.find('REFINE_WGS84_LOGT').text))
             if curPos[0] == '':
                 info_str.append("지도 검색 불가능")
+                mapButton['state'] = 'disabled'
             else:
                 info_str.append("지도 검색 가능")
+                mapButton['state'] = 'normal'
             break
     for i in range(len(info_str)):
         info.insert(float(i + 1), info_str[i])
@@ -243,7 +245,7 @@ def send(recipientAddr):
 # 윈도우 생성
 window = Tk()
 window.title("HSJ")
-window.geometry("800x600")
+window.geometry("700x600")
 window.configure(bg=BGCOLOR)
 window.resizable(width=False, height=False)
 
@@ -283,35 +285,35 @@ MainText.pack(anchor='center',fill='both')
 # 종목 선택 버튼
 buttonBaseball = ImageButton(frameMenu)
 buttonBaseball.setImage('images/baseball.png')
-buttonBaseball.configure(bg=BGCOLOR, bd=5)
-buttonBaseball.grid(row=0,column=0,sticky='ew',padx=5)
+buttonBaseball.configure(bg=BGCOLOR, bd=5, relief='sunken')
+buttonBaseball.grid(row=0,column=0,sticky='ew',padx=10)
 buttonBaseball['command']=lambda:buttonClick(BASEBALL)
 
 buttonSoccer = ImageButton(frameMenu)
 buttonSoccer.setImage('images/soccer.png')
 buttonSoccer.configure(bg=BGCOLOR, bd=5)
-buttonSoccer.grid(row=0,column=1,sticky='ew',padx=5)
+buttonSoccer.grid(row=0,column=1,sticky='ew',padx=10)
 buttonSoccer['command']=lambda:buttonClick(SOCCER)
 
 buttonTennis = ImageButton(frameMenu)
 buttonTennis.setImage('images/tennis.png')
 buttonTennis.configure(bg=BGCOLOR, bd=5)
-buttonTennis.grid(row=0,column=2,sticky='ew',padx=5)
+buttonTennis.grid(row=0,column=2,sticky='ew',padx=10)
 buttonTennis['command']=lambda:buttonClick(TENNIS)
-
-buttonBall = ImageButton(frameMenu)
-buttonBall.setImage('images/ballgym.png')
-buttonBall.configure(bg=BGCOLOR, bd=5)
-buttonBall.grid(row=0,column=4,sticky='ew',padx=5)
-buttonBall['command']=lambda:buttonClick(BALLGYM)
 
 buttonSwim = ImageButton(frameMenu)
 buttonSwim.setImage('images/swim.png')
 buttonSwim.configure(bg=BGCOLOR, bd=5)
-buttonSwim.grid(row=0,column=3,sticky='ew',padx=5)
+buttonSwim.grid(row=0,column=3,sticky='ew',padx=10)
 buttonSwim['command']=lambda:buttonClick(SWIM)
 
-sportsButton = {BASEBALL:buttonBaseball, SOCCER:buttonSoccer, TENNIS:buttonTennis, BALLGYM:buttonBall, SWIM:buttonSwim, }
+buttonBall = ImageButton(frameMenu)
+buttonBall.setImage('images/ballgym.png')
+buttonBall.configure(bg=BGCOLOR, bd=5)
+buttonBall.grid(row=0,column=4,sticky='ew',padx=10)
+buttonBall['command']=lambda:buttonClick(BALLGYM)
+
+sportsButton = {BASEBALL:buttonBaseball, SOCCER:buttonSoccer, TENNIS:buttonTennis, SWIM:buttonSwim, BALLGYM:buttonBall}
 
 
 # 시군 콤보박스
@@ -339,7 +341,7 @@ listBox.pack(side='left',anchor='n',expand=True,fill='both')
 LBScrollbar.pack(side='right',expand=True,fill='y')
 LBScrollbar.config(command=listBox.yview)
 
-info = Text(infoframe,font=fontNormal,width=50, height=10)
+info = Text(infoframe,font=fontNormal,width=40, height=10)
 info.pack(side='left', fill='both')
 
 # 메일, 지도 버튼
@@ -351,6 +353,7 @@ mapButton.setImage('images/map.png')
 mapButton.configure(padx=5, bg=BGCOLOR, bd=0)
 mapButton['command'] = makeMap
 mailButton['command'] = onEmailPopup
+mapButton['state'] = 'disabled'
 mailButton.pack(side='left')
 mapButton.pack(side='right')
 graph = Canvas(frameB, width=300, height=100, bg=BGCOLOR)
