@@ -12,6 +12,7 @@ from send_email import sendMail
 from email.mime.text import MIMEText
 from image import ImageButton
 from mapview import Map
+import rect
 
 curList = []
 info_str = []
@@ -50,9 +51,7 @@ def drawGraph(canvas, canvasWidth, canvasHeight):
         if k == sportsNow: color='green'
 
         curHeight = maxheight*v/nMax
-        top = bottom - curHeight
-        left = i * rectWidth
-        right = (i + 1) * rectWidth
+        top, left, right = rect.rect(rectWidth, bottom, i, int(curHeight));
         canvas.create_rectangle(left,top,right,bottom,fill=color,tag='grim',activefill='yellow')
     
         canvas.create_text((left+right)//2, top-10,text=v,tags='grim')
