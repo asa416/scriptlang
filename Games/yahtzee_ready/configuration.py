@@ -34,6 +34,7 @@ class Configuration:
 
         if row == 8:
             checkingList = [0] * 6
+            checking=False
             for dice in dices:
                 checkingList[dice.getRoll() - 1] += 1
                 score += dice.getRoll()
