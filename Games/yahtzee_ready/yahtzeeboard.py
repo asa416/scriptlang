@@ -159,7 +159,8 @@ class YahtzeeBoard:
         #    UI의 UPPERTOTAL, UPPERBONUS 에 내용 채우기.
         # TODO: 구현
 
-        self.fields[self.LOWERTOTAL][self.player]['text'] = cur_player.getLowerScore()
+        if cur_player.getLowerScore != 0:
+            self.fields[self.LOWERTOTAL][self.player]['text'] = cur_player.getLowerScore()
         # LOWER category 전부 사용되었으면(cur_player.allLowerUsed()로써 확인) 
         # -> cur_player.getLowerScore() 점수에 따라
         #   UI의 LOWERTOTAL 에 내용 채우기.
@@ -200,10 +201,18 @@ class YahtzeeBoard:
         # -> 이긴 사람을 알리고 새 게임 시작.
         # TODO: 구현
         if self.round == 13:
+            maxNum = 0
+            index = 0
+            for i in range(self.numPlayers):
+                if int(self.fields[self.TOTAL][i]['text']) > maxNum:
+                    maxNum = int(self.fields[self.TOTAL][i]['text'])
+                    index = i
+
+            winner = self.players[index].name
+
             from tkinter import messagebox
-            messagebox.showinfo("game end", "you win")
-            self.pwindow.destroy()
-            self.InitGame()
+            messagebox.showinfo("game end", "%s win"%winner)
+            self.Reset()
 
         # 다시 Roll Dice 버튼과 diceButtons 버튼들을 활성화.
         self.rollDice.configure(text="Roll Dice")
@@ -218,6 +227,30 @@ class YahtzeeBoard:
         # bottomLabel 초기화.
         self.bottomLabel.configure(text=cur_player.toString()+
             "차례: Roll Dice 버튼을 누르세요")
+
+    def Reset(self):
+        for player in self.players:
+            player.Reset()
+        
+        self.player = 0
+
+        for i in range(self.TOTAL):
+            for j in range(self.numPlayers):  # j열 : 플레이어
+                if j == self.player:
+                    if (i == self.UPPERTOTAL or i == self.UPPERBONUS or i == self.LOWERTOTAL or i == self.TOTAL):
+                        self.fields[i][j]['state'] = 'disabled'
+                        self.fields[i][j]['bg'] = 'light gray'
+                        self.fields[i][j]['text'] =""
+                    else:
+                        self.fields[i][j]['state'] = 'normal'
+                        self.fields[i][j]['bg'] = self.color_btn_bg                   
+                        self.fields[i][j]['text'] = ""   
+                else:
+                    self.fields[i][j]['state'] = 'disabled'
+                    self.fields[i][j]['bg'] = 'light gray'
+                    self.fields[i][j]['text'] = ""
+
+        self.round = 0
 
 if __name__ == '__main__':
     YahtzeeBoard()

@@ -9,6 +9,11 @@ class Player:
         self.scores = [0 for i in range(itemcount)] # 13개 category 점수
         self.used = [False for i in range(itemcount)]    # 13개 caterory 사용여부
 
+    def Reset(self):
+        itemcount = self.UPPER+self.LOWER
+        self.scores = [0 for i in range(itemcount)] # 13개 category 점수
+        self.used = [False for i in range(itemcount)]    # 13개 caterory 사용여부
+
     def setScore(self, score, index):   # index번째 점수 set
         self.scores[index] = score
 

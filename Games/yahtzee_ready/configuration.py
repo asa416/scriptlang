@@ -34,18 +34,18 @@ class Configuration:
 
         if row == 8:
             checkingList = [0] * 6
-            checking = False
             for dice in dices:
                 checkingList[dice.getRoll() - 1] += 1
                 score += dice.getRoll()
             for i in checkingList:
-                if i == 3:
+                if i >= 3:
                     checking = True
                     break
             if checking:
                 return score
             else:
-                return 0
+                score = 0
+                return score
 
         if row == 9:
             checkingList = [0] * 6
@@ -54,13 +54,14 @@ class Configuration:
                 checkingList[dice.getRoll() - 1] += 1
                 score += dice.getRoll()
             for i in checkingList:
-                if i == 4:
+                if i >= 4:
                     checking = True
                     break
             if checking:
                 return score
             else:
-                return 0
+                score = 0
+                return score
 
         if row == 10:
             checkingSet = set()
@@ -68,10 +69,11 @@ class Configuration:
             for dice in dices:
                 checkingSet.add(dice.getRoll())
                 checkingList.append(dice.getRoll())
-            if len(checkingSet) != 2:
-                return score
-            if checkingList[1] == checkingList[3]:
-                return 25
+            checkingList.sort()
+            if len(checkingSet) == 2:
+                if checkingList[1] != checkingList[3]:
+                    score = 25
+            return score
                 
         if row == 11:
             checking = set()
