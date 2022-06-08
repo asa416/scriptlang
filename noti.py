@@ -1,34 +1,46 @@
 import sys
 import telepot
 from pprint import pprint
-import urllib
 from urllib.request import urlopen
 import traceback
 from xml.etree import ElementTree
 from xml.dom.minidom import parseString
 
-key = '8b7e606c85b44ac2bbd02d70fcbc135d'
-TOKEN = '5557473516:AAEHL1QHM6rfclxZtm-R1Epo1PvOV7NX1Dc'
+from data import *
+
+TOKEN = '5562382017:AAHih7vbGfToXnLS0179qLDm_pvMvEP4-lg'
 MAX_MSG_LENGTH = 300
-baseurl='https://openapi.gg.go.kr/PublicTrainingFacilityBasebal?KEY='+key+'&Type=xml&pSize=1000&pIndex=1'
 bot = telepot.Bot(TOKEN)
 
-def getData(loc_param):
+def getAddress(s):
+    return '주소 없음'if not s else s
+
+def getData(loc_param, sport):
     res_list = []
-    url = baseurl+'&SIGUN_CD='+loc_param
 
-    request = urllib.request.Request(url)
-    request.get_method = lambda: 'GET'
-    response_body = urlopen(request).read().decode('utf-8')
+    if sport == BASEBALL:
+        xmlData = getDataBaseball(loc_param)
+    elif sport == SOCCER:
+        xmlData = getDataSoccer(loc_param)
+    elif sport == TENNIS:
+        xmlData = getDataTennis(loc_param)
+    elif sport == SWIM:
+        xmlData = getDataSwim(loc_param)
+    elif sport == BALLGYM:
+        xmlData = getDataBall(loc_param)
 
-    tree = ElementTree.fromstring(response_body)
+    tree = ElementTree.fromstring(xmlData)
 
     items = tree.iter("row")
     for item in items:
-        build = item.find("FACLT_NM").text
-        name = item.find("SIGUN_NM").text
-        row=build + ',' + name
+        sigun = item.find('SIGUN_NM').text
+        name = item.find("FACLT_NM").text
+        address = item.find("REFINE_LOTNO_ADDR").text
+        row=name + '(' + getAddress(address) + ')'
         res_list.append(row)
+    if sport == TENNIS:
+        res_list = list(set(res_list))
+    res_list.insert(0, sigun)
     return res_list
 
 def sendMessage(user, msg):

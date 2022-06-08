@@ -6,11 +6,29 @@ from urllib.request import urlopen
 import re
 from datetime import date, datetime
 
+BASEBALL, SOCCER, TENNIS, SWIM, BALLGYM = range(5)
+
 import noti
 
-def replyAptData(user,loc_param):
+NOTICE = '''모르는 명령어입니다.\n
+명령어를 보시려면 help를 입력해주세요.
+'''
+
+HELP = '''명령어 도움말\n
+야구 [지역번호], 축구 [지역번호], 테니스 [지역번호], 수영 [지역번호], 구기 [지역번호]
+\n지역번호 [가평군 : 41820, 고양시 : 41280, 과천시 : 41290,
+광명시 : 41210, 광주시 : 41610,구리시 : 41310, 군포시 : 41410,
+김포시 : 41570, 남양주시 : 41360, 동두천시 : 41250, 부천시 : 41190,
+성남시 : 41130, 수원시 : 41110, 시흥시 : 41390, 안산시 : 41270,
+안성시 : 41550, 안양시 : 41170, 양주시 : 41630, 양평군 : 41830,
+여주시 : 41670, 연천군 : 41800, 오산시 : 41370, 용인시 : 41460,
+의왕시 : 41430, 의정부시 : 41150, 이천시 : 41500, 파주시 : 41480,
+평택시 : 41220, 포천시 : 41650, 하남시 : 41450, 화성시 : 41590]
+'''
+
+def replyAptData(user,loc_param, sport):
     print(user, loc_param)
-    res_list = noti.getData(loc_param)
+    res_list = noti.getData(loc_param, sport)
 
     msg =''
     for r in res_list:
@@ -55,19 +73,19 @@ def handle(msg):
     text=msg['text']
     args=text.split(' ')
     if text.startswith('야구') and len(args)>1:
-        print('try to 야구', args[1])
-        replyAptData( chat_id, args[1] )
+        replyAptData( chat_id, args[1], BASEBALL)
+    elif text.startswith('축구') and len(args)>1:
+        replyAptData( chat_id, args[1], SOCCER)
+    elif text.startswith('테니스') and len(args)>1:
+        replyAptData( chat_id, args[1], TENNIS)
+    elif text.startswith('수영') and len(args)>1:
+        replyAptData( chat_id, args[1], SWIM)
+    elif text.startswith('구기') and len(args)>1:
+        replyAptData( chat_id, args[1], BALLGYM)
+    elif text.startswith('help'):
+        noti.sendMessage(chat_id, HELP)
     else:
-        noti.sendMessage(chat_id, '''모르는 명령어입니다.\n야구 [지역번호]
-\n지역 [가평군 : 41820, 고양시 : 41280, 과천시 : 41290,
-광명시 : 41210, 광주시 : 41610,구리시 : 41310, 군포시 : 41410,
-김포시 : 41570, 남양주시 : 41360, 동두천시 : 41250, 부천시 : 41190,
-성남시 : 41130, 수원시 : 41110, 시흥시 : 41390, 안산시 : 41270,
-안성시 : 41550, 안양시 : 41170, 양주시 : 41630, 양평군 : 41830,
-여주시 : 41670, 연천군 : 41800, 오산시 : 41370, 용인시 : 41460,
-의왕시 : 41430, 의정부시 : 41150, 이천시 : 41500, 파주시 : 41480,
-평택시 : 41220, 포천시 : 41650, 하남시 : 41450, 화성시 : 41590]
-''')
+        noti.sendMessage(chat_id, NOTICE)
 
 today = date.today()
 print('[',today,']received token:', noti.TOKEN)

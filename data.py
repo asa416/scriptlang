@@ -9,10 +9,9 @@ sigun_list = []
 
 BASEBALL, SOCCER, TENNIS, SWIM, BALLGYM = range(5)
 
-
 myData = defaultdict(lambda:defaultdict(int))
 
-def getDataBaseball():
+def getDataBaseball(code = None):
     url = 'https://openapi.gg.go.kr/PublicTrainingFacilityBasebal'
 
     queryParams = '?' + urlencode({ quote_plus('KEY') : '8b7e606c85b44ac2bbd02d70fcbc135d',
@@ -20,6 +19,8 @@ def getDataBaseball():
     quote_plus('pSize'):'1000',
     quote_plus('pIndex'):'1'
     })
+    if code != None:
+        queryParams += '&SIGUN_CD='+code
 
     request = urllib.request.Request(url+unquote(queryParams))
     # print ('Your Request:\n'+url+queryParams)
@@ -27,7 +28,7 @@ def getDataBaseball():
     response_body = urlopen(request).read().decode('utf-8')
     return response_body
 
-def getDataSoccer():
+def getDataSoccer(code = None):
     url = 'https://openapi.gg.go.kr/PublicTrainingFacilitySoccer'
 
     queryParams = '?' + urlencode({ quote_plus('KEY') : 'cc3702232f9d4e70a663bc53279486e1',
@@ -36,13 +37,16 @@ def getDataSoccer():
     quote_plus('pIndex'):'1'
     })
 
+    if code != None:
+        queryParams += '&SIGUN_CD='+code
+
     request = urllib.request.Request(url+unquote(queryParams))
     # print ('Your Request:\n'+url+queryParams)
     request.get_method = lambda: 'GET'
     response_body = urlopen(request).read().decode('utf-8')
     return response_body
 
-def getDataTennis():
+def getDataTennis(code = None):
     url = 'https://openapi.gg.go.kr/PublicTennis'
 
     queryParams = '?' + urlencode({ quote_plus('KEY') : 'ff5245121c4440f59a365a2d57e923d0',
@@ -51,13 +55,16 @@ def getDataTennis():
     quote_plus('pIndex'):'1'
     })
 
+    if code != None:
+        queryParams += '&SIGUN_CD='+code
+
     request = urllib.request.Request(url+unquote(queryParams))
     # print ('Your Request:\n'+url+queryParams)
     request.get_method = lambda: 'GET'
     response_body = urlopen(request).read().decode('utf-8')
     return response_body
 
-def getDataSwim():
+def getDataSwim(code = None):
     url = 'https://openapi.gg.go.kr/PublicSwimmingPool'
 
     queryParams = '?' + urlencode({ quote_plus('KEY') : '53976cb9ccc8418e97a1e06da922d0a0',
@@ -66,13 +73,16 @@ def getDataSwim():
     quote_plus('pIndex'):'1'
     })
 
+    if code != None:
+        queryParams += '&SIGUN_CD='+code
+
     request = urllib.request.Request(url+unquote(queryParams))
     # print ('Your Request:\n'+url+queryParams)
     request.get_method = lambda: 'GET'
     response_body = urlopen(request).read().decode('utf-8')
     return response_body
 
-def getDataBall():
+def getDataBall(code = None):
     url = 'https://openapi.gg.go.kr/PublicGameOfBallGymnasium'
 
     queryParams = '?' + urlencode({ quote_plus('KEY') : 'c5d4e782fc8c4037b2f3051f7c82b46b',
@@ -80,6 +90,9 @@ def getDataBall():
     quote_plus('pSize'):'1000',
     quote_plus('pIndex'):'1'
     })
+
+    if code != None:
+        queryParams += '&SIGUN_CD='+code
 
     request = urllib.request.Request(url+unquote(queryParams))
     # print ('Your Request:\n'+url+queryParams)
