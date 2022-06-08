@@ -19,8 +19,26 @@ class ImageButton(Button):
         self.configure(image = img)
         self.image = img
 
-def change_img():
-    print('adfadsfadsf')
+class ImageLabel(Label):
+    def __init__(self, parent, width, height, filename = None):
+        super().__init__(parent)
+        self.width = width
+        self.height = height
+        if filename:
+            self.setImage(filename)
+
+    def setImage(self, filename):
+        from PIL import Image, ImageTk
+
+        
+        im = (Image.open(filename))
+        
+        im = im.resize((self.width,self.height), Image.ANTIALIAS)
+        img = ImageTk.PhotoImage(im)
+
+        self.configure(image = img)
+        self.image = img
+
 
 if __name__ == '__main__':
 

@@ -6,11 +6,10 @@ from tkinter import *
 from tkinter import messagebox
 from tkinter import font
 import tkinter.ttk as myTtk
-from tokenize import cookie_re
 from data import *
 from send_email import sendMail
 from email.mime.text import MIMEText
-from image import ImageButton
+from image import ImageButton, ImageLabel
 from mapview import Map
 import rect
 
@@ -98,11 +97,22 @@ def buttonClick(num):
         if k == sportsNow:
             v['relief']='sunken'
         else:
-            v['relief']='raised'             
+            v['relief']='raised'
+    if sportsNow == BASEBALL:    
+        imageLabel.setImage('images/baseball_ball.png')        
+    elif sportsNow == SOCCER:
+        imageLabel.setImage('images/soccer_ball.png')
+    elif sportsNow == TENNIS:
+        imageLabel.setImage('images/tennis_ball.png')
+    elif sportsNow == SWIM:
+        imageLabel.setImage('images/swimming.png')
+    elif sportsNow == BALLGYM:
+        imageLabel.setImage('images/shuttlecock.png')
+
 
 def getStr(s):
     return ''if not s else s
-
+    
 # info에 info 출력 해주는 함수
 #------------------------------------------------------------------------------
 def showInfo(event):
@@ -245,7 +255,7 @@ def send(recipientAddr):
 # 윈도우 생성
 window = Tk()
 window.title("HSJ")
-window.geometry("700x600")
+window.geometry("800x600")
 window.configure(bg=BGCOLOR)
 window.resizable(width=False, height=False)
 
@@ -274,6 +284,10 @@ frameList.pack(side='top',expand=True,fill='both')
 # 메일, 지도 버튼 프레임
 frameB = Frame(window, padx=10, pady =5, bg=BGCOLOR)
 frameB.pack(side='bottom',expand=True,fill='both')
+
+# 이미지 프레임
+imageFrame = Frame(window, padx=5, pady=5, bg=BGCOLOR)
+imageFrame.place(x = 680, y = 10, width = 100, height=100)
 
 
 # GUI 배치
@@ -315,6 +329,11 @@ buttonBall['command']=lambda:buttonClick(BALLGYM)
 
 sportsButton = {BASEBALL:buttonBaseball, SOCCER:buttonSoccer, TENNIS:buttonTennis, SWIM:buttonSwim, BALLGYM:buttonBall}
 
+# 이미지 라벨
+imageLabel = ImageLabel(imageFrame, 90, 90)
+imageLabel.setImage('images/baseball_ball.png')
+imageLabel.configure(bg=BGCOLOR, bd=0)
+imageLabel.pack(expand=True, fill='both')
 
 # 시군 콤보박스
 LBScrollbar = Scrollbar(frameCombo)
@@ -341,7 +360,7 @@ listBox.pack(side='left',anchor='n',expand=True,fill='both')
 LBScrollbar.pack(side='right',expand=True,fill='y')
 LBScrollbar.config(command=listBox.yview)
 
-info = Text(infoframe,font=fontNormal,width=40, height=10)
+info = Text(infoframe,font=fontNormal,width=50, height=10)
 info.pack(side='left', fill='both')
 
 # 메일, 지도 버튼
