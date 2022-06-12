@@ -86,7 +86,6 @@ def onEmailPopup():
     btnEmail = Button(popup, text="확인", command=onEmailInput)
     btnEmail.pack(anchor="s", padx=10, pady=10)
 
-
 # 버튼 클릭시
 #------------------------------------------------------------------------------
 def buttonClick(num):
@@ -172,6 +171,7 @@ def showInfo(event):
                 info_str.append("비정규 경영장 폭: "+getStr(item.find('IRREGULR_RELYSWIMPL_BT').text)+'m\n')
                 info_str.append("비정규 경영장 레인 수: "+getStr(item.find('IRREGULR_RELYSWIMPL_LANE_CNT').text)+'\n')
                 info_str.append("지도 검색 불가능")
+                mapButton['state'] = 'disabled'
                 break        
             elif sportsNow == BALLGYM:
                 info_str.append("가능 종목: "+getStr(item.find('POSBL_ITEM_NM').text)+'\n')
@@ -375,11 +375,11 @@ mailButton['command'] = onEmailPopup
 mapButton['state'] = 'disabled'
 mailButton.pack(side='left')
 mapButton.pack(side='right')
+
+# 그래프 그리기
 graph = Canvas(frameB, width=300, height=100, bg=BGCOLOR)
 graph.place(relx=.5, rely=.5, anchor=CENTER)
 drawGraph(graph, 300, 100)
-
-# 그래프 그리기
 
 # 메인루프
 #------------------------------------------------------------------------------
