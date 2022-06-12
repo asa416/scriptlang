@@ -82,10 +82,8 @@ def handle(msg):
         replyAptData( chat_id, args[1], SWIM)
     elif text.startswith('구기') and len(args)>1:
         replyAptData( chat_id, args[1], BALLGYM)
-    elif text.startswith('help'):
-        noti.sendMessage(chat_id, HELP)
     else:
-        noti.sendMessage(chat_id, NOTICE)
+        noti.sendMessage(chat_id, HELP)
 
 today = date.today()
 print('[',today,']received token:', noti.TOKEN)
