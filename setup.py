@@ -6,10 +6,9 @@ setup(
     name='PublicFacility',
     version='1.0',
 
-    py_modules=['main'],
+    py_modules=['data', 'image', 'main', 'mapview', 'send_email'],
 
-    package_dir={'PublicFacility': ''},
-    packages=['PublicFacility', 'images'],
+    packages=['images'],
     package_data={'images':['*.png']},
 
     ext_modules=[module_rect],
