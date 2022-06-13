@@ -8,8 +8,9 @@ setup(
 
     py_modules=['main'],
 
-    packages=['images'],
+    package_dir={'PublicFacility': ''},
+    packages=['PublicFacility', 'images'],
     package_data={'images':['*.png']},
 
-    ext_modules=[module_rect]
+    ext_modules=[module_rect],
 )
